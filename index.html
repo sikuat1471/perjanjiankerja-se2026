@@ -262,6 +262,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#c49a2a!import
 <button class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400" data-v="dbmitra" onclick="nav('dbmitra')"><i class="fas fa-address-book w-5 text-center text-xs"></i>Database Mitra <span id="bdgDb" class="badge ml-auto hidden">0</span></button>
 <p class="text-[9px] text-gray-600 uppercase tracking-wider font-semibold px-4 pt-3 pb-1">Kontrak SE2026</p>
 <button class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400" data-v="mitra" onclick="nav('mitra')"><i class="fas fa-file-contract w-5 text-center text-xs"></i>Kontrak Kerja <span id="bdgKon" class="badge ml-auto hidden">0</span></button>
+<button class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400" data-v="rekap" onclick="nav('rekap')"><i class="fas fa-list-alt w-5 text-center text-xs"></i>Rekap Pernama</button>
 <p class="text-[9px] text-gray-600 uppercase tracking-wider font-semibold px-4 pt-3 pb-1">Sistem</p>
 <button class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400" data-v="settings" onclick="nav('settings')"><i class="fas fa-cog w-5 text-center text-xs"></i>Pengaturan</button>
 <button class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400" data-v="exim" onclick="nav('exim')"><i class="fas fa-file-export w-5 text-center text-xs"></i>Export / Import</button>
@@ -347,8 +348,8 @@ var svT=null;
 function aSave(){clearTimeout(svT);svT=setTimeout(function(){try{localStorage.setItem('se2026App',JSON.stringify({v:S.v,set:S.set,mitra:S.mitra,dbMitra:S.dbMitra}));S.lastSaved=new Date();$('svSt').textContent='©Putu_'+S.lastSaved.toLocaleTimeString('id-ID')}catch(e){}},400)}
 function loadS(){try{var d=JSON.parse(localStorage.getItem('se2026App'));if(d){if(d.v)S.v=d.v;if(d.set)Object.assign(S.set,d.set);if(d.mitra)S.mitra=d.mitra;if(d.dbMitra)S.dbMitra=d.dbMitra}else S.dbMitra=getSampleDbMitra();S.dbMitra.forEach(function(m){if(m.aktif===undefined)m.aktif=true});if(!S.set.jenisPelatihan)S.set.jenisPelatihan='Fullday';if(S.set.sanksiNilai===undefined)S.set.sanksiNilai='';S.mitra.forEach(function(m){if(m.volTermin1===undefined)m.volTermin1='';if(m.volTermin2===undefined)m.volTermin2='';if(m.volTotal===undefined)m.volTotal='';if(m.nilaiTermin1===undefined)m.nilaiTermin1=0;if(m.nilaiTermin2===undefined)m.nilaiTermin2=0;if(!m.wilayahKerja)m.wilayahKerja=[];if(m.jenisPelatihan===undefined)m.jenisPelatihan='Fullday'});regenAllNomor();if(S.mitra.length||S.dbMitra.length)$('svSt').textContent='@copyright_putu'}catch(e){if(!S.dbMitra.length)S.dbMitra=getSampleDbMitra()}}
 function toggleSB(){$('sb').classList.toggle('-translate-x-full');$('sbBg').classList.toggle('hidden')}
-var VNAMES={dashboard:'Dashboard',dbmitra:'Database Mitra',mitra:'Kontrak Kerja',settings:'Pengaturan',exim:'Export / Import'};
-var VNAMES_ICONS={dashboard:'fa-chart-pie',dbmitra:'fa-address-book',mitra:'fa-file-contract',settings:'fa-cog',exim:'fa-file-export'};
+var VNAMES={dashboard:'Dashboard',dbmitra:'Database Mitra',mitra:'Kontrak Kerja',rekap:'Rekap Pernama',settings:'Pengaturan',exim:'Export / Import'};
+var VNAMES_ICONS={dashboard:'fa-chart-pie',dbmitra:'fa-address-book',mitra:'fa-file-contract',rekap:'fa-list-alt',settings:'fa-cog',exim:'fa-file-export'};
 var BL=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 var HR=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 function nav(v){S.v=v;_selMitra.clear();_selMode=false;document.querySelectorAll('.nav-item').forEach(function(el){el.classList.toggle('active',el.dataset.v===v)});var titleEl=$('sbTitle');if(titleEl){titleEl.style.opacity='0';titleEl.style.transform='translateY(-4px)';setTimeout(function(){titleEl.innerHTML='<i class="fas '+(VNAMES_ICONS[v]||'fa-file')+' mr-1.5 text-[11px] opacity-70"></i>'+(VNAMES[v]||'Dashboard');titleEl.style.opacity='1';titleEl.style.transform='translateY(0)'},120)}document.title=(VNAMES[v]||'Dashboard')+' — SE2026 BPS';aSave();render();if(window.innerWidth<1024)toggleSB()}
@@ -663,7 +664,7 @@ var lampTabel='<div class="lamp-header">I. DAFTAR URAIAN PEKERJAAN, WAKTU PENYEL
 +'<tr><td class="col-no" style="text-align:center">2</td><td>'+uraianT3+'</td><td class="col-waktu" style="text-align:center;font-size:10pt;vertical-align:middle">31 Agustus 2026</td><td class="col-pct" style="text-align:center;vertical-align:middle">100%</td><td class="col-vol" style="text-align:center;font-family:monospace;vertical-align:middle">'+esc(volT2)+'</td><td class="col-nilai" style="text-align:right;font-family:monospace;font-weight:600;vertical-align:middle">'+(nt2?Number(nt2).toLocaleString('id-ID'):'Rp \u2026\u2026\u2026\u2026\u2026\u2026, 00')+'</td></tr></tbody><tfoot><tr><td></td><td style="text-align:center">Total</td><td class="col-waktu" style="text-align:center;font-size:9pt">15 Juni \u2013 31 Agustus 2026</td><td class="col-pct" style="text-align:center"></td><td class="col-vol" style="text-align:center;font-family:monospace"></td><td class="col-nilai" style="text-align:right;font-family:monospace">'+(ntTotal?Number(ntTotal).toLocaleString('id-ID'):'Rp \u2026\u2026\u2026\u2026\u2026\u2026, 00')+'</td></tr>'+terbilangRowPrint+'</tfoot></table>';
 
 var wkData=m.wilayahKerja||[];var wkTabel='';var wkColNums='';
-if(isPML){var wkTitleText='II. DAFTAR PETUGAS DAN WILAYAH KERJA';wkColNums='<tr class="wk-col-num-row"><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td><td>(5)</td></tr>';if(wkData.length){wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>Nama Petugas Lapangan Sensus</th><th>[KODE] KECAMATAN</th><th>[KODE] KELURAHAN</th><th>Jumlah SLS/SUB-SLS</th></tr></thead><tbody>'+wkColNums+wkData.map(function(w,i){return'<tr><td style="text-align:center">'+(i+1)+'</td><td>'+esc(w.namaPetugas||'\u2026')+'</td><td>'+esc(w.kecamatan||'\u2026')+'</td><td>'+esc(w.kelurahan||w.desa||'\u2026')+'</td><td style="text-align:center;font-family:monospace">'+esc(w.jumlahSls||'\u2026')+'</td></tr>'}).join('')+'</tbody></table>'}else{wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>Nama Petugas Lapangan Sensus</th><th>[KODE] KECAMATAN</th><th>[KODE] KELURAHAN</th><th>Jumlah Sls/Sub-SLS</th></tr></thead><tbody>'+wkColNums+'<tr><td style="text-align:center">1</td><td>\u2026</td><td>\u2026</td><td>\u2026</td><td style="text-align:center">\u2026</td></tr></tbody></table>'}}
+if(isPML){var wkTitleText='II. DAFTAR PETUGAS DAN WILAYAH KERJA';wkColNums='<tr class="wk-col-num-row"><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td><td>(5)</td></tr>';if(wkData.length){wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>Nama Petugas Lapangan Sensus</th><th>[KODE] KECAMATAN</th><th>[KODE] KELURAHAN</th><th>Jumlah Sls/Sub-SLS</th></tr></thead><tbody>'+wkColNums+wkData.map(function(w,i){return'<tr><td style="text-align:center">'+(i+1)+'</td><td>'+esc(w.namaPetugas||'\u2026')+'</td><td>'+esc(w.kecamatan||'\u2026')+'</td><td>'+esc(w.kelurahan||w.desa||'\u2026')+'</td><td style="text-align:center;font-family:monospace">'+esc(w.jumlahSls||'\u2026')+'</td></tr>'}).join('')+'</tbody></table>'}else{wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>Nama Petugas Lapangan Sensus</th><th>[KODE] KECAMATAN</th><th>[KODE] KELURAHAN</th><th>Jumlah Sls/Sub-SLS</th></tr></thead><tbody>'+wkColNums+'<tr><td style="text-align:center">1</td><td>\u2026</td><td>\u2026</td><td>\u2026</td><td style="text-align:center">\u2026</td></tr></tbody></table>'}}
 else{var wkTitleText='II. DAFTAR WILAYAH KERJA';wkColNums='<tr class="wk-col-num-row"><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td></tr>';if(wkData.length){wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>[Kode] Kecamatan</th><th>[Kode] Kelurahan</th><th>Jumlah SLS/SUB-SLS</th></tr></thead><tbody>'+wkColNums+wkData.map(function(w,i){return'<tr><td style="text-align:center">'+(i+1)+'</td><td>'+esc(w.kecamatan||'\u2026')+'</td><td>'+esc(w.desa||'\u2026')+'</td><td style="text-align:center;font-family:monospace">'+esc(w.jmlSls||'\u2026')+'</td></tr>'}).join('')+'</tbody></table>'}else{wkTabel='<div class="wk-title">'+wkTitleText+'</div><table class="wk-table"><thead><tr><th>No</th><th>[Kode] Kecamatan</th><th>[Kode] Kelurahan</th><th>Jumlah SLS/SUB-SLS</th></tr></thead><tbody>'+wkColNums+'<tr><td style="text-align:center">1</td><td>\u2026</td><td>\u2026</td><td style="text-align:center">\u2026</td></tr></tbody></table>'}}
 
 var lampiranTitle=isPML?'PERJANJIAN KERJA PETUGAS PEMERIKSA LAPANGAN':'PERJANJIAN KERJA PETUGAS LAPANGAN';
@@ -673,7 +674,7 @@ var page4='<div class="paper-lampiran">'+wkTabel+'</div>';
 
 return page1+page2+page3+page4}
 
-function printK(id){var m=S.mitra.find(function(x){return x.id===id});if(!m)return toast('Kontrak tidak ditemukan','error');var jenisLabel=m.jenisPetugas==='PML'?'PML':'PPL';var fileTitle=esc(m.nama)+' - '+jenisLabel;var html='<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>'+fileTitle+'</title>'+_printCSS(false)+'</head><body>'+_printToolbar(esc(m.nama)+' ('+jenisLabel+')',esc(m.nomorKontrak),'Cetak')+_contractBody(m)+'</body></html>';try{var blob=new Blob([html],{type:'text/html;charset=utf-8'});var url=URL.createObjectURL(blob);var w=window.open(url,'_blank','width:1100,height=900,scrollbars=yes');if(!w){var ifr=document.createElement('iframe');ifr.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;z-index:99999;background:#fff';document.body.appendChild(ifr);ifr.contentDocument.open();ifr.contentDocument.write(html);ifr.contentDocument.close();setTimeout(function(){ifr.contentWindow.print()},500);toast('Popup diblokir — cetak via iframe','warning')}}catch(e){toast('Gagal: '+e.message,'error')}}
+function printK(id){var m=S.mitra.find(function(x){return x.id===id});if(!m)return toast('Kontrak tidak ditemukan','error');var jenisLabel=m.jenisPetugas==='PML'?'PML':'PPL';var fileTitle=esc(m.nama)+' - '+jenisLabel;var html='<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>'+fileTitle+'</title>'+_printCSS(false)+'</head><body>'+_printToolbar(esc(m.nama)+' ('+jenisLabel+')',esc(m.nomorKontrak),'Cetak')+_contractBody(m)+'</body></html>';try{var blob=new Blob([html],{type:'text/html;charset=utf-8'});var url=URL.createObjectURL(blob);var w=window.open(url,'_blank','width=1100,height=900,scrollbars=yes');if(!w){var ifr=document.createElement('iframe');ifr.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;z-index:99999;background:#fff';document.body.appendChild(ifr);ifr.contentDocument.open();ifr.contentDocument.write(html);ifr.contentDocument.close();setTimeout(function(){ifr.contentWindow.print()},500);toast('Popup diblokir — cetak via iframe','warning')}}catch(e){toast('Gagal: '+e.message,'error')}}
 
 /* ===== SAMPLE DATA ===== */
 function getSampleDbMitra(){var n=gid;return[
@@ -694,8 +695,119 @@ var sampleWK_PML=[{namaPetugas:'Anita Razmawati',kecamatan:'Kec. Bukit Raya',kel
 var pelatihan=S.set.jenisPelatihan||'Fullday';
 S.mitra=S.dbMitra.map(function(d,i){var isUB=i<2;var jp=isUB?'PML':'PPL';var cfg=HONOR_CONFIG[jp];var sanksi=getEffectiveSanksi(jp);var vT1=isUB?'3/200':'150';var vT2=isUB?'5/500':'150';var vT1n=parseInt(vT1)||0,vT2n=parseInt(vT2)||0;var vD1=isUB?(vT1.split('/')[1]||''):'',vD2=isUB?(vT2.split('/')[1]||''):'';var vTotal=isUB?(vT1n+vT2n)+'/'+(parseInt(vD1)+parseInt(vD2)):String(vT1n+vT2n);return{id:gid(),nomorKontrak:'',nama:d.nama,nik:d.nik,alamat:d.alamat,noTelepon:d.noHp,tglTandaTangan:isUB?'2026-05-15':'2026-06-01',tglSelesai:isUB?'2026-07-31':'2026-08-31',jenisPetugas:jp,jenisPelatihan:pelatihan,totalHonor:cfg.totalHonor,sanksiPelatihan:sanksi,nilaiTermin1:cfg.nilaiTermin1,nilaiTermin2:cfg.nilaiTermin2,volTermin1:vT1,volTermin2:vT2,volTotal:vTotal,wilayahKerja:isUB?sampleWK_PML:sampleWK_PPL,createdAt:new Date(now).getTime()+i,updatedAt:now}});regenAllNomor();aSave();render();toast('Data contoh dimuat — '+S.mitra.length+' kontrak SE2026 (2 PML + 8 PPL). Format: B-MMDDNNN/SPK-SE2026/1471/SS.330/2026')}
 
+/* ===== REKAP PERNAMA ===== */
+var rkapSearch='';
+function rRekap(){
+  return '<div class="fade-in">'+
+    '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">'+
+      '<div>'+
+        '<h2 class="text-2xl font-bold">Rekap Pernama</h2>'+
+        '<p class="text-gray-500 text-sm mt-1">Rekapitulasi nama, nomor kontrak, dan volume pekerjaan</p>'+
+      '</div>'+
+      '<button onclick="printRekap()" class="btn-print px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap">'+
+        '<i class="fas fa-print mr-2"></i>Cetak Rekap</button>'+
+    '</div>'+
+    '<div class="bg-white rounded-2xl border border-cool-200 shadow-sm">'+
+      '<div class="px-4 py-2 border-b border-cool-200">'+
+        '<div class="relative">'+
+          '<i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>'+
+          '<input type="text" placeholder="Cari nama, nomor kontrak..." value="'+esc(rkapSearch)+'" oninput="rkapSearch=this.value;updRekapList()" class="w-full pl-8 pr-3 py-2 rounded-lg border border-cool-200 text-sm">'+
+        '</div>'+
+      '</div>'+
+      '<div id="rekapListWrap"></div>'+
+    '</div>'+
+  '</div>';
+}
+function updRekapList(){
+  var el=$('rekapListWrap');
+  if(!el)return;
+  var list=[].slice.call(S.mitra);
+  if(rkapSearch){var q=rkapSearch.toLowerCase();list=list.filter(function(m){return m.nama.toLowerCase().includes(q)||(m.nomorKontrak||'').toLowerCase().includes(q)})}
+  list.sort(function(a,b){return(a.nama||'').localeCompare(b.nama||'')});
+  var tf=list.length;
+  if(!tf){el.innerHTML='<div class="px-6 py-16 text-center text-gray-400"><i class="fas fa-inbox text-3xl mb-3 block"></i>'+(rkapSearch?'Tidak ditemukan':'Belum ada kontrak')+'</div>';return}
+  el.innerHTML='<div class="tbl-scroll"><table class="w-full ctbl ctbl-compact"><thead><tr class="text-center">'+
+    '<th class="w-7">No</th>'+
+    '<th style="width:220px">Nomor Kontrak</th>'+
+    '<th>Nama</th>'+
+    '<th class="text-center">Jenis Petugas</th>'+
+    '<th class="text-center">Volume Termin I (40%)</th>'+
+    '<th class="text-center">Volume Termin II (100%)</th>'+
+    '</tr></thead><tbody>'+
+    list.map(function(m,i){
+      var jC=m.jenisPetugas==='PML'?'<span class="jenis-chip pml"><i class="fas fa-clipboard-check" style="font-size:7px"></i>PML</span>':'<span class="jenis-chip ppl"><i class="fas fa-walking" style="font-size:7px"></i>PPL</span>';
+      return '<tr class="tbl-row border-b border-cool-100 last:border-0">'+
+        '<td class="text-[10px] text-center">'+(i+1)+'</td>'+
+        '<td>'+formatNomorBadge(m.nomorKontrak,false)+'</td>'+
+        '<td class="font-medium">'+esc(m.nama)+'</td>'+
+        '<td class="text-center">'+jC+'</td>'+
+        '<td class="text-center font-mono text-[11px]">'+esc(m.volTermin1||'-')+'</td>'+
+        '<td class="text-center font-mono text-[11px]">'+esc(m.volTermin2||'-')+'</td>'+
+      '</tr>';
+    }).join('')+
+    '</tbody></table></div>';
+}
+function printRekap(){
+  if(!S.mitra.length)return toast('Tidak ada data kontrak','warning');
+  var list=[].slice.call(S.mitra);
+  list.sort(function(a,b){return(a.nama||'').localeCompare(b.nama||'')});
+  var rows=list.map(function(m,i){
+    return '<tr>'+
+      '<td style="text-align:center">'+(i+1)+'</td>'+
+      '<td style="font-family:monospace;font-size:10pt">'+esc(m.nomorKontrak||'-')+'</td>'+
+      '<td>'+esc(m.nama)+'</td>'+
+      '<td style="text-align:center">'+esc(m.jenisPetugas||'-')+'</td>'+
+      '<td style="text-align:center;font-family:monospace">'+esc(m.volTermin1||'-')+'</td>'+
+      '<td style="text-align:center;font-family:monospace">'+esc(m.volTermin2||'-')+'</td>'+
+    '</tr>';
+  }).join('');
+  var html='<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>Rekap Pernama - SE2026</title>'+
+    '<style>'+
+    '@page{size:A4 portrait;margin:15mm}'+
+    '*{margin:0;padding:0;box-sizing:border-box}'+
+    'body{font-family:"Times New Roman",Times,serif;font-size:11pt;color:#000}'+
+    '.header{text-align:center;margin-bottom:14pt}'+
+    '.header h1{font-size:13pt;font-weight:bold;text-transform:uppercase}'+
+    '.header h2{font-size:11pt;font-weight:bold;margin-top:3pt}'+
+    '.header p{font-size:10pt;margin-top:2pt;color:#444}'+
+    'table{width:100%;border-collapse:collapse;margin-top:6pt}'+
+    'th,td{border:1px solid #000;padding:5pt 8pt;font-size:10pt}'+
+    'th{background:#f0f0f0;font-weight:bold;text-align:center}'+
+    '.pt-toolbar{position:fixed;top:12px;right:12px;z-index:9999;display:flex;gap:8px;font-family:Arial,sans-serif}'+
+    '.pt-toolbar button{padding:8px 18px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;font-family:Arial,sans-serif}'+
+    '.pt-toolbar .pt-close{width:32px;height:32px;background:rgba(12,26,48,.95);border:1px solid rgba(255,255,255,.15);border-radius:7px;display:inline-flex;align-items:center;justify-content:center}'+
+    '@media print{.pt-toolbar{display:none!important}}'+
+    '</style></head><body>'+
+    '<div class="pt-toolbar no-print">'+
+      '<button onclick="window.onafterprint=function(){window.close()};window.print()"><i>🖨️</i> Cetak</button>'+
+      '<button class="pt-close" onclick="window.close()">✕</button>'+
+    '</div>'+
+    '<div class="header">'+
+      '<h1>Rekapitulasi Kontrak Kerja</h1>'+
+      '<h2>Sensus Ekonomi 2026</h2>'+
+      '<p>'+esc(S.set.bpsNama||'Badan Pusat Statistik')+'</p>'+
+    '</div>'+
+    '<table>'+
+      '<thead><tr>'+
+        '<th style="width:5%">No</th>'+
+        '<th style="width:22%">Nomor Kontrak</th>'+
+        '<th style="width:25%">Nama</th>'+
+        '<th style="width:10%">Jenis</th>'+
+        '<th style="width:19%">Volume Termin I (40%)</th>'+
+        '<th style="width:19%">Volume Termin II (100%)</th>'+
+      '</tr></thead>'+
+      '<tbody>'+rows+'</tbody>'+
+    '</table>'+
+    '</body></html>';
+  try{
+    var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    window.open(url,'_blank','width=960,height=800');
+  }catch(e){toast('Gagal: '+e.message,'error')}
+}
+
 /* ===== RENDER ===== */
-function render(){updBadges();var mc=$('mc');if(!mc)return;switch(S.v){case 'dashboard':mc.innerHTML=rDash();break;case 'dbmitra':mc.innerHTML=rDbMitra();setTimeout(function(){updDbList()},0);break;case 'mitra':mc.innerHTML=rMitra();setTimeout(function(){updMitraList()},0);break;case 'settings':mc.innerHTML=rSettings();setTimeout(function(){ssInit('ss-pelatihan-setting',function(val){updSettingsSanksiPreview()})},0);break;case 'exim':mc.innerHTML=rExIm();break;default:mc.innerHTML=rDash()}mc.scrollTop=0;window.scrollTo({top:0,behavior:'auto'})}
+function render(){updBadges();var mc=$('mc');if(!mc)return;switch(S.v){case 'dashboard':mc.innerHTML=rDash();break;case 'dbmitra':mc.innerHTML=rDbMitra();setTimeout(function(){updDbList()},0);break;case 'mitra':mc.innerHTML=rMitra();setTimeout(function(){updMitraList()},0);break;case 'rekap':mc.innerHTML=rRekap();setTimeout(function(){updRekapList()},0);break;case 'settings':mc.innerHTML=rSettings();setTimeout(function(){ssInit('ss-pelatihan-setting',function(val){updSettingsSanksiPreview()})},0);break;case 'exim':mc.innerHTML=rExIm();break;default:mc.innerHTML=rDash()}mc.scrollTop=0;window.scrollTo({top:0,behavior:'auto'})}
 
 /* ===== INIT ===== */
 loadS();
